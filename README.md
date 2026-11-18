@@ -1,7 +1,7 @@
-# Compensating repair-induced degradation in rewound induction motors — code and data
+# Compensating repair-induced core loss in rewound induction motors — code and data
 
-Scripts and results for the paper *"Compensating Repair-Induced Degradation in Rewound Induction Motors through
-Constrained Stator Winding Redesign: A Calibrated FEA Study"* (M. Ekiz, in preparation).
+Scripts and results for the paper *"Compensating repair-induced core loss in rewound induction motors by constrained
+winding redesign: a loss-ratio criterion for repair shops"* (M. Ekiz, in preparation).
 
 Reference machine: **CREATOR Case induction motor**, TU Graz (3.7 kW, 4 poles, 36/28 slots).
 Machine data: K. Heidarikani, P. K. Dhakal, A. Mütze, R. Seebacher, *CREATOR Case: Induction Motor Data*,
@@ -44,7 +44,7 @@ Calibrated parameters: effective air gap 0.44 mm, effective lamination fill 0.87
 | `scan2.py` | Discrete design scan: turns 14–20, 1–3 strands, IEC 60317 wires, 4 damage scenarios, 3 pitches |
 | `compmap2.py` | Compensation map (Fig.) |
 | `fig_pitch.py`, `harmloss.py` | Pitch comparison incl. belt-harmonic cage-loss estimate |
-| `general.py`, `fig_general.py` | Generality test of the shop rule over 13 loss splits |
+| `general.py`, `fig_general.py` | First version of the generality test (superseded by `rule2.py`/`rule3.py`, 12 loss splits) |
 | `mc.py`, `fig_mc.py` | Monte Carlo uncertainty (N = 500, seed 2026; `mc.json` included) |
 | `deemb_fig.py` | Error of skipping de-embedding and its effect on rated-point prediction |
 | `perm_damage.py` | Core damage with reduced permeability + extended shop rule |
@@ -71,3 +71,17 @@ New analysis scripts (all in `analysis/`, run with Python 3, numpy, scipy, matpl
 `fea9a.py` and `fea9b.py` analyse the FEA run 9 results (`results/sonuclar_adim9A.csv`, `results/sonuclar_adim9B2.csv`): leakage split, saturation at start, and harmonic cage losses.
 
 New FEA script `fea/adim9_ek_fea.py`: saturated locked-rotor runs with an energy-based leakage split (part A) and rotating-rotor magnetostatic runs at rated load for harmonic cage losses (part B).
+
+## Revision 2
+
+| Script | What it does | Output |
+| --- | --- | --- |
+| `rule3.py` | Criterion with second-order terms (Eq. 6) against the full model, synthetic splits, IE motors, part load | `rule3.json` |
+| `ecgen_sat.py` | IE2/IE3 motors with a saturating magnetizing branch | `ecgen_sat.json` |
+| `dkmax_unc.py` | Absorbable core-loss increase with input uncertainty | `dkmax_unc.json` |
+| `easa.py`, `fig_easa.py` | Measured before/after-rewind loss segregations of 20 motors (EASA/AEMT 2019 report, Tables 1-2 and 1-4; data in `data_ext/`) | `easa.json`, Fig. 9 |
+| `scan_sat.py`, `fig_pitch_sat.py` | Design scan with saturated starting parameters; pitch comparison | `scan_sat.json`, Fig. 6 |
+| `fig_rule.py` | Fig. 8 | |
+
+Note: the FEA scripts in `fea/` carry Turkish comments; each file's header describes its purpose and outputs.
+The calibration sweeps of steps 2–4 were exploratory; their final values are in Table 2 and reproduced by `adim5_son_dogrulama.py`.
