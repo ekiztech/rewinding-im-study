@@ -32,14 +32,14 @@ for ax,(mlt,title) in zip(axs,[(1.0,'(a) Original end-winding length'),(1.05,'(b
     ax.clabel(cs, fmt='%+.1f', fontsize=6.5, inline_spacing=2)
     c0 = ax.contour(X, ar, res[mlt], levels=[0], colors=INK, linewidths=1.8)
     ax.axvline(20, color=INK, ls='--', lw=0.8); ax.text(21, 0.93, 'EASA 20 %\nlimit', fontsize=6.5, va='bottom', color=INK)
-    for yl,lab in ((0.40/0.30,'fill 40 %'),(0.45/0.30,'fill 45 %')):
-        ax.axhline(yl, color=MUTED, lw=0.7, ls=':'); ax.text(97, yl-0.008, lab, fontsize=6.5, ha='right', va='top', color=INK)
+    for yl,lab in ((1.24,'$k_{ins}$ = 0.70'),(1.33,'$k_{ins}$ = 0.75')):
+        ax.axhline(yl, color=MUTED, lw=0.7, ls=':'); ax.text(97 if (mlt==1.0 or yl>1.3) else 52, yl-0.008, lab, fontsize=6.5, ha='right', va='top', color=INK)
     for n,d,lab in designs:
         y = fill_of(18,n,d)/0.30
         ax.plot([2], [y], marker='o', ms=4, mfc='white', mec=INK, mew=0.8, clip_on=False)
     ax.set_title(title, fontsize=9, loc='left', pad=6)
     ax.clabel(c0, fmt={0:r'$\Delta\eta=0$'}, fontsize=7, manual=[(70, float(np.interp(70, X, [float(np.interp(0, res[mlt][:,j], ar)) for j in range(len(kfe))])))]); ax.set_xlabel('Core-loss increase after repair (%)')
-    ax.set_xlim(0,100); ax.set_ylim(0.9,1.5)
+    ax.set_xlim(0,100); ax.set_ylim(0.9,1.5); ax.set_xticks([0,20,40,60,80] if mlt==1.0 else [0,20,40,60,80,100])
 axs[0].set_ylabel('Copper area ratio  $A_{Cu}/A_{Cu,0}$  (N = 18)')
 for n,d,lab in designs:
     y = fill_of(18,n,d)/0.30

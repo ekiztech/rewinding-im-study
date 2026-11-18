@@ -55,3 +55,19 @@ Reproduce all analysis results and figures: `python deembed_run.py` first, then 
 ## Licence
 
 Code: MIT. Results and derived data: CC BY-NC 4.0 (follows the licence of the TU Graz dataset).
+
+## Revision 1 (after internal review)
+
+New analysis scripts (all in `analysis/`, run with Python 3, numpy, scipy, matplotlib):
+
+| Script | What it does | Output |
+| --- | --- | --- |
+| `rule2.py` | Shop criterion, first-order and with flux-feedback term, against the full model on 12 synthetic loss splits | `rule2.json` |
+| `ecgen.py` | IE2/IE3 motors (7.5–110 kW) built from published loss shares; criterion check, compensable damage, part load | `ecgen.json` |
+| `refrev.py` (+ `refrev_lib.py`) | Reference motor: insulated lay factor, starting-current and MLT sensitivity, thermal feedback, part load, rated-current consistency | `refrev.json` |
+| `mc2.py` | Monte Carlo with parameter, model-form and loop-test uncertainty (N = 500) | `mc2.json` |
+| `figs_rev.py` | Figures: rule accuracy, pitch comparison, part load, Monte Carlo | `figures/` |
+
+`fea9a.py` and `fea9b.py` analyse the FEA run 9 results (`results/sonuclar_adim9A.csv`, `results/sonuclar_adim9B2.csv`): leakage split, saturation at start, and harmonic cage losses.
+
+New FEA script `fea/adim9_ek_fea.py`: saturated locked-rotor runs with an energy-based leakage split (part A) and rotating-rotor magnetostatic runs at rated load for harmonic cage losses (part B).
