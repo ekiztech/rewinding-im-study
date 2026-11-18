@@ -107,7 +107,7 @@ OUT['loads'] = loads.tolist()
 
 # ---------------- 4. nameplate-current consistency and loss-ratio sensitivity
 I1, pf = base['I1'], base['pf']; Iact, Ireac = I1*pf, I1*math.sin(math.acos(pf))
-Ineed_act = math.sqrt(max(6.9**2 - Ireac**2, 0)); eta_needed = 3700/(3*H.V_PH*Ineed_act + base['P_fe'])
+Ineed_act = math.sqrt(max(6.9**2 - Ireac**2, 0)); eta_needed = 3700/(3*H.V_PH*Ineed_act)  # input power at 6.9 A with the model's reactive current
 OUT['nameplate'] = dict(I1=I1, pf=pf, I_active=Iact, I_reactive=Ireac, eta_needed_for_6p9A=eta_needed)
 print('model I1 %.2f A (active %.2f, reactive %.2f); 6.9 A would need eta >= %.1f%%' % (I1, Iact, Ireac, 100*eta_needed))
 OUT['ratio_sens'] = {}

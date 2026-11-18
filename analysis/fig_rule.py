@@ -11,26 +11,28 @@ def save(fig, name):
 
 # ---------- Fig. 8: rule accuracy and compensable damage
 R3 = json.load(open('rule3.json'))
-S = [r for r in R3['synthetic'] if np.isfinite(r['a_mod']) and np.isfinite(r['a1'])]
+S = [r for r in R3['synthetic'] if np.isfinite(r['a_mod']) and np.isfinite(r['a1']) and np.isfinite(r['a3']) and r['a3'] <= 1.5]
+for r in S: r['p1'] = 100*(r['a1']-r['a_mod']); r['p3'] = 100*(r['a3']-r['a_mod'])
+for x in R3['ie']+R3['partload']: x['p1'] = 100*(x['v1']-x['mod']); x['p3'] = 100*(x['v3']-x['mod'])
 G = json.load(open('ecgen.json')); RR = json.load(open('refrev.json'))
 fig, ax = plt.subplots(1, 2, figsize=(7.2, 3.0), gridspec_kw={'wspace':0.3})
 a = ax[0]
-a.axhspan(-2, 2, color='#efeee9', lw=0)
-a.scatter([r['dk']*r['r'] for r in S], [r['e1'] for r in S], s=14, facecolor='none', edgecolor=MUTED, lw=0.7, label='first-order rule, Eq. (5)')
-a.scatter([r['dk']*r['r'] for r in S if np.isfinite(r['e3'])], [r['e3'] for r in S if np.isfinite(r['e3'])], s=14, color=INK, lw=0, label='with second-order terms, Eq. (6)')
+a.axhspan(-1, 1, color='#efeee9', lw=0)
+a.scatter([r['dk']*r['r'] for r in S], [r['p1'] for r in S], s=14, facecolor='none', edgecolor=MUTED, lw=0.7, label='first-order rule, Eq. (5)')
+a.scatter([r['dk']*r['r'] for r in S if np.isfinite(r['e3'])], [r['p3'] for r in S if np.isfinite(r['e3'])], s=14, color=INK, lw=0, label='with second-order terms, Eq. (6)')
 names = [g['name'] for g in G]
 for x in R3['ie']:
     i = names.index(x['name']); r = G[i]['r']
-    a.scatter(x['dk']*r, x['e1'], marker='D', s=18, facecolor='white', edgecolor=C4[i], lw=0.9, zorder=3)
-    a.scatter(x['dk']*r, x['e3'], marker='D', s=18, color=C4[i], edgecolor='white', lw=0.4, zorder=3, label=x['name'].replace('.0 kW', ' kW') if x['dk'] == 0.2 else None)
+    a.scatter(x['dk']*r, x['p1'], marker='D', s=18, facecolor='white', edgecolor=C4[i], lw=0.9, zorder=3)
+    a.scatter(x['dk']*r, x['p3'], marker='D', s=18, color=C4[i], edgecolor='white', lw=0.4, zorder=3, label=x['name'].replace('.0 kW', ' kW') if x['dk'] == 0.2 else None)
 for x in R3['partload']:
     if x['load'] == '1.0': continue
     rr = RR['partload'][x['load']]['r']; dk = {'D1':0.2,'D2':0.5,'D3':0.2}[x['dmg']]
-    a.scatter(dk*rr, x['e1'], marker='^', s=20, facecolor='white', edgecolor=MUTED, lw=0.8, zorder=3)
-    a.scatter(dk*rr, x['e3'], marker='^', s=20, color=INK, zorder=3, label='reference motor, 50/75 % load' if (x['load'], x['dmg']) == ('0.5', 'D1') else None)
-a.axhline(0, color=MUTED, lw=0.6); a.set_ylim(-22, 16); a.set_xlim(0, 0.75)
-a.set_xlabel(r'$\Delta k_{fe}\,r$'); a.set_ylabel('Criterion error vs. model (%)')
-a.text(0.74, -3, 'conservative above 0', fontsize=6.5, ha='right', va='top', color=MUTED)
+    a.scatter(dk*rr, x['p1'], marker='^', s=20, facecolor='white', edgecolor=MUTED, lw=0.8, zorder=3)
+    a.scatter(dk*rr, x['p3'], marker='^', s=20, color=INK, zorder=3, label='reference motor, 50/75 % load' if (x['load'], x['dmg']) == ('0.5', 'D1') else None)
+a.axhline(0, color=MUTED, lw=0.6); a.set_ylim(-10, 10); a.set_xlim(0, 0.45)
+a.set_xlabel(r'$\Delta k_{fe}\,r$'); a.set_ylabel('Criterion error in copper area (pp)')
+a.text(0.44, -1.4, 'conservative above 0', fontsize=6.5, ha='right', va='top', color=MUTED)
 a.legend(fontsize=6, loc='upper center', bbox_to_anchor=(0.5,-0.2), ncol=2); a.set_title('(a) Criterion error', fontsize=9, loc='left')
 b = ax[1]; hd = np.linspace(1.0, 1.25, 11)
 ref = []

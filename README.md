@@ -1,5 +1,8 @@
 # Compensating repair-induced core loss in rewound induction motors — code and data
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24353780.svg)](https://doi.org/10.5281/zenodo.24353780)
+
+
 Scripts and results for the paper *"Compensating repair-induced core loss in rewound induction motors by constrained
 winding redesign: a loss-ratio criterion for repair shops"* (M. Ekiz, in preparation).
 
@@ -85,3 +88,10 @@ New FEA script `fea/adim9_ek_fea.py`: saturated locked-rotor runs with an energy
 
 Note: the FEA scripts in `fea/` carry Turkish comments; each file's header describes its purpose and outputs.
 The calibration sweeps of steps 2–4 were exploratory; their final values are in Table 2 and reproduced by `adim5_son_dogrulama.py`.
+
+
+## Revision 3 (review rounds 3-5)
+- Criterion accuracy reported in percentage points of copper area (`analysis/fig_rule.py`, Fig. 8a).
+- 95 % intervals of the absorbable core-loss increase (`analysis/dkmax_unc.py`).
+- `analysis/refrev.json`: corrected efficiency implied by the 6.9 A nameplate current (93 %); note on admissible counts (paper uses `scan_sat.json`).
+- `analysis/ecgen.json`: note that Table 5 uses the v3 second-order form.

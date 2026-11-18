@@ -1627,7 +1627,7 @@
   "pf": 0.8679435432218843,
   "I_active": 6.685674294303719,
   "I_reactive": 3.8257398242110296,
-  "eta_needed_for_6p9A": 0.9079471948746773
+  "eta_needed_for_6p9A": 0.930030447426581
  },
  "ratio_sens": {
   "7.70 A (model)": {
@@ -1648,5 +1648,6 @@
    "D2": 1.1318939365315601,
    "D3": 1.1002013506935324
   }
- }
+ },
+ "note_feasible_counts": "Admissible counts 242/265 here use unsaturated starting leakage; the paper reports 247/271 from scan_sat.json (saturated starting leakage)."
 }
